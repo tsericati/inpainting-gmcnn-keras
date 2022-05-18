@@ -9,6 +9,7 @@ from models import gmcnn_gan
 from utils import trainer
 from utils import training_utils
 from utils import constants
+import tensorflow as tf
 
 log = training_utils.get_logger()
 
@@ -48,6 +49,10 @@ def main():
   training_utils.set_visible_gpu(args.gpu)
   if args.warm_up_generator:
     log.info('Performing generator training only with the reconstruction loss.')
+    if tf.test.gpu_device_name():
+        print('Default GPU Device: {}'.format(tf.test.gpu_device_name()))
+    else:
+        print("Please install GPU version of TF")
   
   config = main_config.MainConfig(MAIN_CONFIG_FILE)
   wgan_batch_size = config.training.wgan_training_ratio * config.training.batch_size

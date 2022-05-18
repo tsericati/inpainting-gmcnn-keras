@@ -122,7 +122,7 @@ In order to continue training with full WGAN-GP framework (GMCNN generator, loca
 python runner.py --train_path /path/to/training/images --mask_path /path/to/mask/images --experiment_name "experiment_name" -from_weights
 ```
 
-Running training with additional **from_weights** flag will force pipeline to load the latest models checkpoints from **./outputs/weights/** directory. 
+Running training with additional **from_weights** flag will force pipeline to load the latest models checkpoints from **./outputs/weights/** directory.
 
 ### GMCNN model training in Google Colab notebook
 If you don't have an access to workstation with GPU, you can use the below exemplary Google Colab notebook for training your GMCNN model on Places365 validation data and NVIDIA's testing mask with usage of K80 GPU available within Google Colab backend: [GMCNN in Google Colab](https://github.com/tlatkowski/inpainting-gmcnn-keras/blob/master/colab/Image_Inpainting_with_GMCNN_model.ipynb)
@@ -142,6 +142,26 @@ You can track the metrics during the training with usage of TensorBoard:
 ```bash
 tensorboard --logdir=./outputs/experiment_name/logs
 ```
+
+## Model Prediction
+### Single image testing and validation
+You can test your model on individual images using the below command
+
+```bash
+python predict.py --image /path/to/image.png --mask /path/to/mask.png --experiment_name "experiment_name" --save_to /path/to/output/image.png
+```
+Weights for the latest model's checkpoints will be loaded from **./outputs/weights/** directory of the experiment.
+
+### Object Detection Pipeline
+Code to automate the detection of objects and remove them can be executed using the below command.  
+The label specified will be the class detected and masked from images.
+```bash
+python pipeline.py --images_path /path/to/images --label label_name --experiment_name "experiment_name" --save_to_path /path/to/save/output/images
+```
+Weights for the YOLO model will be loaded from the `yolo_weight_path` directory or `models/yolov3.weights` by default.  
+YOLO weights can be downloaded from https://pjreddie.com/media/files/yolov3.weights
+
+Weights for the latest model's checkpoints will be loaded from **./outputs/weights/** directory of the experiment for the GMCNN.
 
 ## Implementation differences from original paper
 

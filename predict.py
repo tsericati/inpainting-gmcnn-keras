@@ -9,6 +9,7 @@ import numpy as np
 from config import main_config
 from models import gmcnn_gan
 from utils import training_utils
+from utils import constants
 
 log = training_utils.get_logger()
 
@@ -45,7 +46,11 @@ def main():
   parser.add_argument('--mask',
                       required=True,
                       help='The path to the mask')
-  
+
+  parser.add_argument('--experiment_name',
+                      required=True,
+                      help='The name of experiment')
+
   parser.add_argument('--save_to',
                       default='predicted.jpg',
                       help='The save path of predicted image')
@@ -53,13 +58,16 @@ def main():
   args = parser.parse_args()
   
   config = main_config.MainConfig(MAIN_CONFIG_FILE)
+
+  output_paths = constants.OutputPaths(experiment_name=args.experiment_name)
   
   gmcnn_model = gmcnn_gan.GMCNNGan(batch_size=config.training.batch_size,
                                    img_height=config.training.img_height,
                                    img_width=config.training.img_width,
                                    num_channels=config.training.num_channels,
                                    warm_up_generator=False,
-                                   config=config)
+                                   config=config,
+                                   output_paths=output_paths)
   log.info('Loading GMCNN model...')
   gmcnn_model.load()
   log.info('GMCNN model successfully loaded.')

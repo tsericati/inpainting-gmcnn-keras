@@ -45,8 +45,8 @@ def save_predicted_img(predicted_img_path, input_img, sample_pred, mask, epoch):
 
 
 def get_logger():
-  log = tf.logging
-  tf.logging.set_verbosity(tf.logging.INFO)
+  log = tf.compat.v1.logging
+  tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
   return log
 
 
